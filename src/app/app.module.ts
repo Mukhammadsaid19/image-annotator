@@ -10,7 +10,6 @@ import { FormsModule } from '@angular/forms';
 import { CanvasComponent } from './annotator/canvas/canvas.component';
 import { LabelClassesComponent } from './annotator/label-classes/label-classes.component';
 import { LabelDetailsComponent } from './annotator/label-details/label-details.component';
-import { CardComponent } from './annotator/card/card.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +18,6 @@ import { CardComponent } from './annotator/card/card.component';
     CanvasComponent,
     LabelClassesComponent,
     LabelDetailsComponent,
-    CardComponent,
   ],
   imports: [
     BrowserModule,

@@ -4,9 +4,15 @@ div.container {
   div {
     flex: 1 1 5em;
 
-    margin: 10px 8px;
-    height: 50px;
-    background-color: black;
+    margin: 10px 20px;
+    height: 500px;
     overflow: hidden;
+
+    // border: 1px solid #ccc;
+    // border-radius: 5px;
+  }
+
+  .canvas {
+    flex-grow: 2;
   }
 }

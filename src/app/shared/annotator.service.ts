@@ -8,7 +8,7 @@ import { Label } from '../label.model';
 export class AnnotatorService {
   private labelSource = new BehaviorSubject({
     class: 'dog',
-    bbox: { x1: 2, y1: 10, x2: 50, y2: 100 },
+    bbox: { id: 0, x1: 2, y1: 10, x2: 50, y2: 100 },
   });
 
   labelObservable = this.labelSource.asObservable();
