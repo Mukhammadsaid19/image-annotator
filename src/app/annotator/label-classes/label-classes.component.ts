@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Label } from 'src/app/label.model';
 import { AnnotatorService } from 'src/app/shared/annotator.service';
+import { ClassesService } from 'src/app/shared/classes.service';
 
 @Component({
   selector: 'app-label-classes',
@@ -7,8 +9,9 @@ import { AnnotatorService } from 'src/app/shared/annotator.service';
   styleUrls: ['./label-classes.component.scss'],
 })
 export class LabelClassesComponent implements OnInit {
-  currentLabel: any;
-  currentClass: string = '';
+  drawnLabels: Label[];
+  currentClass: string;
+
   labelClasses: string[] = [
     'Cow',
     'Dog',
@@ -23,14 +26,10 @@ export class LabelClassesComponent implements OnInit {
   ];
 
   handleClassChange() {
-    this.annotatorService.updateLabel(this.currentLabel);
+    this.classesService.updateClass(this.currentClass);
   }
 
-  constructor(private annotatorService: AnnotatorService) {}
+  constructor(private classesService: ClassesService) {}
 
-  ngOnInit(): void {
-    this.annotatorService.labelObservable.subscribe(
-      (label) => (this.currentLabel = label)
-    );
-  }
+  ngOnInit(): void {}
 }

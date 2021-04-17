@@ -1,9 +1,6 @@
 <h1 class="mat-h1">Classes</h1>
 <!-- <label>Choose Class</label> -->
-<mat-radio-group
-  [(ngModel)]="currentLabel.class"
-  (change)="handleClassChange()"
->
+<mat-radio-group [(ngModel)]="currentClass" (change)="handleClassChange()">
   <mat-radio-button
     *ngFor="let labelClass of labelClasses"
     [value]="labelClass"
@@ -11,4 +8,4 @@
     {{ labelClass }}
   </mat-radio-button>
 </mat-radio-group>
-<pre>{{ currentLabel | json }}</pre>
+<pre>{{ currentClass | json }}</pre>

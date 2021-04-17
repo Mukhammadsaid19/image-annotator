@@ -1,0 +1,10 @@
+<h1 class="mat-h1">Labels</h1>
+
+<mat-list>
+  <mat-list-item *ngFor="let label of drawnLabels">
+    <h3 matLine>{{ label.class }}</h3>
+    <button mat-icon-button color="warn" (click)="deleteLabel(label)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-list-item>
+</mat-list>

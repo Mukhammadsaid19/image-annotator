@@ -1,1 +1,17 @@
-<canvas #layer></canvas>
+<div style="position: relative">
+  <h1>Draw a Box</h1>
+
+  <div
+    *ngFor="let label of drawnLabels"
+    class="class-label"
+    [ngStyle]="{
+      'margin-top': label.bbox.y1 + 'px',
+      'margin-left': label.bbox.x1 + 'px'
+    }"
+  >
+    <h2>
+      {{ label.class }}
+    </h2>
+  </div>
+  <canvas #layer id="layer"> </canvas>
+</div>

@@ -6,7 +6,9 @@ import {
   ViewChild,
   EventEmitter,
 } from '@angular/core';
+import { Label } from 'src/app/label.model';
 import { AnnotatorService } from 'src/app/shared/annotator.service';
+import { ClassesService } from 'src/app/shared/classes.service';
 
 @Component({
   selector: 'app-canvas',
@@ -19,20 +21,29 @@ export class CanvasComponent implements OnInit {
   private context: CanvasRenderingContext2D;
   private layerCanvasElement: any;
 
-  drawnLabels: any = [];
-  currentLabel: any;
+  drawnLabels: Label[] = [];
+
+  currentLabel: Label;
   currentImage = new Image();
+  currentClass: string;
   currentIdx = 0;
 
   showInput: boolean = false;
   isMoving: boolean;
-  imgWidth: number;
   initX: number;
   initY: number;
   uniX: number;
   uniY: number;
-  imgHeight: number;
   url: string;
+
+  prettyClassPrint() {
+    let x2 = this.uniX - this.initX;
+    let y2 = this.uniY - this.initY;
+    let dist1 = this.initX ** this.initX + this.initY ** this.initY;
+    let dist2 = x2 ** x2 + y2 ** y2;
+
+    return dist1 > dist2 ? [this.initX, this.initY] : [x2, y2];
+  }
 
   loadImage() {
     this.layerCanvasElement = this.layerCanvas.nativeElement;
@@ -51,6 +62,9 @@ export class CanvasComponent implements OnInit {
 
   showImage() {
     this.loadImage();
+    this.annotatorService.labelObservable.subscribe((value) =>
+      this.refreshCanvas()
+    );
     let parent = this;
 
     this.layerCanvasElement.addEventListener('mousedown', (e) => {
@@ -80,26 +94,20 @@ export class CanvasComponent implements OnInit {
           y2: this.uniY,
         };
 
+        this.currentLabel.class = this.currentClass;
+
         this.handleChangeCanvas();
 
-        parent.drawRectMy(this.initX, this.initY, e.offsetX, e.offsetY);
+        parent.drawRect(this.initX, this.initY, e.offsetX, e.offsetY);
       }
       this.uniX = undefined;
       this.uniY = undefined;
     });
   }
 
-  drawRectMy(x1: number, y1: number, x2: number, y2: number) {
-    let fillColor = 'rgba(63, 81, 181, 0.3)';
-    let strokeColor = 'rgba(63, 81, 181, 1)';
-
-    // this.context.clearRect(
-    //   0,
-    //   0,
-    //   this.layerCanvasElement.width,
-    //   this.layerCanvasElement.width
-    // );
-    // this.loadImage();
+  drawRect(x1: number, y1: number, x2: number, y2: number) {
+    let fillColor = 'rgba(63, 81, 181, 0.2)';
+    let strokeColor = 'rgba(63, 81, 181, 0.8)';
 
     let width = x2 - x1;
     let height = y2 - y1;
@@ -111,53 +119,45 @@ export class CanvasComponent implements OnInit {
     this.context.fillStyle = fillColor;
     this.context.fillRect(x1, y1, width, height);
     this.context.strokeStyle = strokeColor;
-    this.context.lineWidth = 3;
+    this.context.lineWidth = 2;
     this.context.strokeRect(x1, y1, width, height);
   }
 
-  drawRect(color: string, height: number, width: number) {
-    this.uniX = height;
-    this.uniY = width;
-    this.context.clearRect(
-      0,
-      0,
-      this.layerCanvasElement.width,
-      this.layerCanvasElement.width
-    );
-
+  refreshCanvas(): void {
     this.loadImage();
-    this.context.restore();
 
-    this.context.beginPath();
-    this.context.rect(
-      this.currentLabel.bbox.x1,
-      this.currentLabel.bbox.y1,
-      this.uniX,
-      this.uniY
-    );
-    this.context.lineWidth = 2;
-    this.context.strokeStyle = color;
-    this.context.fillStyle = 'rgba(255, 0, 0, 0.3)';
-    this.context.stroke();
+    for (let label of this.drawnLabels) {
+      this.drawRect(
+        label.bbox.x1,
+        label.bbox.y1,
+        label.bbox.x2 + label.bbox.x1,
+        label.bbox.y2 + label.bbox.y1
+      );
+    }
   }
 
   handleChangeCanvas() {
-    this.annotatorService.updateLabel(this.currentLabel);
+    this.annotatorService.addLabel(this.currentLabel);
+    console.log(this.prettyClassPrint());
   }
 
-  constructor(private annotatorService: AnnotatorService) {}
-
-  ngOnChanges() {}
+  constructor(
+    private annotatorService: AnnotatorService,
+    private classesService: ClassesService
+  ) {}
 
   ngOnInit(): void {
     let parent = this;
-    this.annotatorService.labelObservable.subscribe(function (label) {
-      parent.currentLabel = label;
-      // parent.drawRect('green', parent.currentLabel.bbox.)
+    this.annotatorService.labelObservable.subscribe(function (labels) {
+      parent.drawnLabels = labels;
     });
 
-    this.currentImage.src = 'assets/img/sample_1.jpg';
+    this.classesService.classObservable.subscribe((newClass) => {
+      this.currentClass = newClass;
+    });
 
+    this.currentLabel = this.drawnLabels[0];
+    this.currentImage.src = 'assets/img/sample_1.jpg';
     this.currentImage.onload = () => {
       this.showImage();
     };
