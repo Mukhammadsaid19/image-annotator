@@ -3,7 +3,7 @@
     <h1>Draw a Box</h1>
 
     <div
-      *ngFor="let label of drawnLabels"
+      *ngFor="let label of this.tempLabels"
       class="class-label"
       [ngStyle]="{
         'margin-top': label.bbox.y1 + 'px',
@@ -20,6 +20,8 @@
   <div class="control-group">
     <button mat-raised-button color="warn" class="left">Reset</button>
     <button mat-stroked-button>Back</button>
-    <button mat-raised-button color="primary">Next</button>
+    <button mat-raised-button color="primary" (click)="handleNextImage()">
+      Next
+    </button>
   </div>
 </div>

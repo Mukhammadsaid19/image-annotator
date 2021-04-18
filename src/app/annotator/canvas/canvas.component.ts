@@ -7,9 +7,11 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { CategoryModel } from 'src/app/category.model';
+import { ImageModel } from 'src/app/image.model';
 import { Label } from 'src/app/label.model';
 import { AnnotatorService } from 'src/app/shared/annotator.service';
 import { ClassesService } from 'src/app/shared/classes.service';
+import { ImagesService } from 'src/app/shared/images.service';
 
 @Component({
   selector: 'app-canvas',
@@ -23,13 +25,18 @@ export class CanvasComponent implements OnInit {
   private layerCanvasElement: any;
 
   drawnLabels: Label[] = [];
+
   currentClasses: CategoryModel[] = [];
+  currentImages: ImageModel[];
+  currentModelImage: ImageModel;
 
   currentLabel: Label;
   currentImage = new Image();
   currentClass: CategoryModel;
+  tempLabels: Label[] = [];
 
   currentIdx = 0;
+  imageIdx = 0;
 
   showInput: boolean = false;
   isMoving: boolean;
@@ -101,6 +108,8 @@ export class CanvasComponent implements OnInit {
           this.currentClass
         );
 
+        this.currentLabel.image_id = this.currentModelImage.id;
+
         this.handleChangeCanvas();
 
         parent.drawRect(this.initX, this.initY, e.offsetX, e.offsetY);
@@ -131,24 +140,41 @@ export class CanvasComponent implements OnInit {
   refreshCanvas(): void {
     this.loadImage();
 
-    for (let label of this.drawnLabels) {
-      this.drawRect(
-        label.bbox.x1,
-        label.bbox.y1,
-        label.bbox.width + label.bbox.x1,
-        label.bbox.height + label.bbox.y1
-      );
+    this.tempLabels = this.drawnLabels.filter(
+      (label) => label.image_id === this.currentModelImage.id
+    );
+
+    for (let label of this.tempLabels) {
+      if (label.image_id === this.currentModelImage.id) {
+        this.drawRect(
+          label.bbox.x1,
+          label.bbox.y1,
+          label.bbox.width + label.bbox.x1,
+          label.bbox.height + label.bbox.y1
+        );
+      }
     }
   }
 
   handleChangeCanvas() {
     this.annotatorService.addLabel(this.currentLabel);
-    console.log(this.prettyClassPrint());
+  }
+
+  handleNextImage() {
+    if (this.imageIdx < this.currentImages.length) {
+      ++this.imageIdx;
+      this.currentModelImage = this.currentImages[this.imageIdx];
+      this.currentImage.src = `assets/img/${this.currentModelImage.file_name}`;
+      this.currentImage.onload = () => {
+        this.showImage();
+      };
+    }
   }
 
   constructor(
     private annotatorService: AnnotatorService,
-    private classesService: ClassesService
+    private classesService: ClassesService,
+    private imagesService: ImagesService
   ) {}
 
   ngOnInit(): void {
@@ -161,8 +187,11 @@ export class CanvasComponent implements OnInit {
       this.currentClass = newClass;
     });
 
+    this.currentImages = this.imagesService.getAll();
+    this.currentModelImage = this.currentImages[0];
+
     this.currentLabel = this.drawnLabels[0];
-    this.currentImage.src = 'assets/img/sample_1.jpg';
+    this.currentImage.src = `assets/img/${this.currentImages[0].file_name}`;
     this.currentImage.onload = () => {
       this.showImage();
     };

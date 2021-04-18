@@ -57,7 +57,7 @@ export class LabelListComponent implements OnInit {
         area: label.bbox.width * label.bbox.height,
         iscrowd: 0,
         ignore: 0,
-        image_id: 1,
+        image_id: label.image_id,
         bbox: [
           label.bbox.x1,
           label.bbox.y1,
@@ -82,7 +82,6 @@ export class LabelListComponent implements OnInit {
     });
 
     this.value = JSON.stringify(this.coco);
-    console.log(this.value);
   }
 
   openSnackBar(message: string, action: string) {
@@ -96,7 +95,9 @@ export class LabelListComponent implements OnInit {
     this.annotatorService.labelObservable.subscribe(
       (labels) => (this.drawnLabels = labels)
     );
+
     this.images = this.imagesService.getAll();
+
     this.classes = this.classesService.getAll();
   }
 }
