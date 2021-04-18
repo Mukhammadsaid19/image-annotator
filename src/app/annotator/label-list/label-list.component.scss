@@ -1,5 +1,12 @@
-.badge {
-  order: 2;
-  height: 20px;
-  width: 20px;
+.labels-container {
+  display: flex;
+  flex-flow: column nowrap;
+  height: 100%;
+
+  .label-list {
+    flex-basis: 80%;
+  }
+  .buttons {
+    align-self: flex-end;
+  }
 }

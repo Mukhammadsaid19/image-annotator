@@ -8,16 +8,18 @@ import { Label } from '../label.model';
 export class AnnotatorService {
   private labelSource = new BehaviorSubject<Label[]>([
     {
-      class: 'Dog',
-      bbox: { id: 0, x1: 0, y1: 0, x2: 0, y2: 0 },
+      image_id: 0,
+      category_id: 0,
+      bbox: { id: 0, x1: 0, y1: 0, width: 0, height: 0 },
     },
   ]);
 
   private labelStore: { labels: Label[] } = {
     labels: [
       {
-        class: 'Dog',
-        bbox: { id: 0, x1: 0, y1: 0, x2: 0, y2: 0 },
+        image_id: 0,
+        category_id: 0,
+        bbox: { id: 0, x1: 0, y1: 0, width: 0, height: 0 },
       },
     ],
   };

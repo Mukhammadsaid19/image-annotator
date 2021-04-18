@@ -6,6 +6,7 @@ import {
   ViewChild,
   EventEmitter,
 } from '@angular/core';
+import { CategoryModel } from 'src/app/category.model';
 import { Label } from 'src/app/label.model';
 import { AnnotatorService } from 'src/app/shared/annotator.service';
 import { ClassesService } from 'src/app/shared/classes.service';
@@ -22,10 +23,12 @@ export class CanvasComponent implements OnInit {
   private layerCanvasElement: any;
 
   drawnLabels: Label[] = [];
+  currentClasses: CategoryModel[] = [];
 
   currentLabel: Label;
   currentImage = new Image();
-  currentClass: string;
+  currentClass: CategoryModel;
+
   currentIdx = 0;
 
   showInput: boolean = false;
@@ -90,11 +93,13 @@ export class CanvasComponent implements OnInit {
           id: ++this.currentIdx,
           x1: this.initX,
           y1: this.initY,
-          x2: this.uniX,
-          y2: this.uniY,
+          width: this.uniX,
+          height: this.uniY,
         };
 
-        this.currentLabel.class = this.currentClass;
+        this.currentLabel.category_id = this.currentClasses.indexOf(
+          this.currentClass
+        );
 
         this.handleChangeCanvas();
 
@@ -130,8 +135,8 @@ export class CanvasComponent implements OnInit {
       this.drawRect(
         label.bbox.x1,
         label.bbox.y1,
-        label.bbox.x2 + label.bbox.x1,
-        label.bbox.y2 + label.bbox.y1
+        label.bbox.width + label.bbox.x1,
+        label.bbox.height + label.bbox.y1
       );
     }
   }
@@ -161,5 +166,7 @@ export class CanvasComponent implements OnInit {
     this.currentImage.onload = () => {
       this.showImage();
     };
+
+    this.currentClasses = this.classesService.getAll();
   }
 }

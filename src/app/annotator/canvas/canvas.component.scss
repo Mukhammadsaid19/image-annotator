@@ -1,3 +1,14 @@
+.canvas-container {
+  display: flex;
+  flex-flow: column nowrap;
+  height: 100%;
+
+  .canvas-child {
+    position: relative;
+    flex-basis: 88%;
+  }
+}
+
 .class-label {
   position: absolute;
   z-index: 99;
@@ -5,4 +16,18 @@
   height: 30px;
   padding: 3px 7px;
   color: #fff;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+
+  & button {
+    margin-left: 10px;
+
+    &.left {
+      margin-right: auto;
+    }
+  }
 }

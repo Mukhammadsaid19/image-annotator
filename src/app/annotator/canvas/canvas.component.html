@@ -1,17 +1,25 @@
-<div style="position: relative">
-  <h1>Draw a Box</h1>
+<div class="canvas-container">
+  <div class="canvas-child">
+    <h1>Draw a Box</h1>
 
-  <div
-    *ngFor="let label of drawnLabels"
-    class="class-label"
-    [ngStyle]="{
-      'margin-top': label.bbox.y1 + 'px',
-      'margin-left': label.bbox.x1 + 'px'
-    }"
-  >
-    <h2>
-      {{ label.class }}
-    </h2>
+    <div
+      *ngFor="let label of drawnLabels"
+      class="class-label"
+      [ngStyle]="{
+        'margin-top': label.bbox.y1 + 'px',
+        'margin-left': label.bbox.x1 + 'px'
+      }"
+    >
+      <h2>
+        {{ currentClasses[label.category_id].name }}
+      </h2>
+    </div>
+    <canvas #layer id="layer"> </canvas>
   </div>
-  <canvas #layer id="layer"> </canvas>
+
+  <div class="control-group">
+    <button mat-raised-button color="warn" class="left">Reset</button>
+    <button mat-stroked-button>Back</button>
+    <button mat-raised-button color="primary">Next</button>
+  </div>
 </div>

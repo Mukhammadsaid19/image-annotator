@@ -1,12 +1,25 @@
+$primary: rgba(63, 81, 181, 0.5);
 div.container {
   display: flex;
+  height: 85%;
+  align-items: stretch;
 
   div {
     flex: 1 1 5em;
 
     margin: 10px 15px;
-    height: 500px;
-    overflow: hidden;
+
+    // overflow: hidden;
+
+    &:first-child {
+      border-right: 3px solid $primary;
+    }
+    &:last-child {
+      border-left: 3px solid $primary;
+    }
+
+    // background-color: rgba($color: #ccc, $alpha: 0.2);
+    padding: 5px 15px;
   }
 
   .canvas {

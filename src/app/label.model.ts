@@ -1,10 +1,11 @@
 export interface Label {
-  class: string;
+  category_id: number;
+  image_id: number;
   bbox: {
     id: number;
     x1: number;
     y1: number;
-    x2: number;
-    y2: number;
+    width: number;
+    height: number;
   };
 }

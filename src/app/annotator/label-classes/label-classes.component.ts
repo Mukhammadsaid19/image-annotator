@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CategoryModel } from 'src/app/category.model';
 import { Label } from 'src/app/label.model';
 import { AnnotatorService } from 'src/app/shared/annotator.service';
 import { ClassesService } from 'src/app/shared/classes.service';
@@ -10,20 +11,9 @@ import { ClassesService } from 'src/app/shared/classes.service';
 })
 export class LabelClassesComponent implements OnInit {
   drawnLabels: Label[];
-  currentClass: string;
+  currentClass: CategoryModel;
 
-  labelClasses: string[] = [
-    'Cow',
-    'Dog',
-    'Cat',
-    'Fox',
-    'Ox',
-    'Rabbit',
-    'Cheetah',
-    'Human',
-    'Spider',
-    'Elephant',
-  ];
+  labelClasses: CategoryModel[];
 
   handleClassChange() {
     this.classesService.updateClass(this.currentClass);
@@ -31,5 +21,8 @@ export class LabelClassesComponent implements OnInit {
 
   constructor(private classesService: ClassesService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.labelClasses = this.classesService.getAll();
+    this.currentClass = this.labelClasses[0];
+  }
 }
