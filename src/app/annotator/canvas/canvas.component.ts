@@ -70,12 +70,6 @@ export class CanvasComponent implements OnInit {
       this.currentImage.height
     );
   }
-  getCursorPosition(canvas, event) {
-    const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    console.log('x: ' + x + ' y: ' + y);
-  }
 
   showImage() {
     this.loadImage();
@@ -85,7 +79,6 @@ export class CanvasComponent implements OnInit {
     let parent = this;
 
     this.layerCanvasElement.addEventListener('mousedown', (e) => {
-      this.getCursorPosition(this.context, e);
       this.isMoving = true;
       this.initX = e.offsetX;
       this.initY = e.offsetY;
