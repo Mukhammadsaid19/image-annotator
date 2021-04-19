@@ -15,11 +15,12 @@
       </h2>
     </div>
     <canvas #layer id="layer"> </canvas>
+    <canvas #board id="board"></canvas>
   </div>
 
   <div class="control-group">
-    <button mat-raised-button color="warn" class="left">Reset</button>
-    <button mat-stroked-button>Back</button>
+    <!-- <button mat-raised-button color="warn" class="left">Reset</button> -->
+    <button mat-stroked-button (click)="handlePrevImage()">Back</button>
     <button mat-raised-button color="primary" (click)="handleNextImage()">
       Next
     </button>

@@ -20,6 +20,7 @@ import { ImagesService } from 'src/app/shared/images.service';
 })
 export class CanvasComponent implements OnInit {
   @ViewChild('layer', { static: false }) layerCanvas: ElementRef;
+  @ViewChild('board', { static: false }) boardCanvas: ElementRef;
 
   private context: CanvasRenderingContext2D;
   private layerCanvasElement: any;
@@ -69,6 +70,12 @@ export class CanvasComponent implements OnInit {
       this.currentImage.height
     );
   }
+  getCursorPosition(canvas, event) {
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    console.log('x: ' + x + ' y: ' + y);
+  }
 
   showImage() {
     this.loadImage();
@@ -78,6 +85,7 @@ export class CanvasComponent implements OnInit {
     let parent = this;
 
     this.layerCanvasElement.addEventListener('mousedown', (e) => {
+      this.getCursorPosition(this.context, e);
       this.isMoving = true;
       this.initX = e.offsetX;
       this.initY = e.offsetY;
@@ -163,6 +171,17 @@ export class CanvasComponent implements OnInit {
   handleNextImage() {
     if (this.imageIdx < this.currentImages.length) {
       ++this.imageIdx;
+      this.currentModelImage = this.currentImages[this.imageIdx];
+      this.currentImage.src = `assets/img/${this.currentModelImage.file_name}`;
+      this.currentImage.onload = () => {
+        this.showImage();
+      };
+    }
+  }
+
+  handlePrevImage() {
+    if (this.imageIdx >= 0) {
+      --this.imageIdx;
       this.currentModelImage = this.currentImages[this.imageIdx];
       this.currentImage.src = `assets/img/${this.currentModelImage.file_name}`;
       this.currentImage.onload = () => {

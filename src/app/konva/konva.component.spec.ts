@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LabelDetailsComponent } from './label-details.component';
+import { KonvaComponent } from './konva.component';
 
-describe('LabelDetailsComponent', () => {
-  let component: LabelDetailsComponent;
-  let fixture: ComponentFixture<LabelDetailsComponent>;
+describe('KonvaComponent', () => {
+  let component: KonvaComponent;
+  let fixture: ComponentFixture<KonvaComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LabelDetailsComponent ]
+      declarations: [ KonvaComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LabelDetailsComponent);
+    fixture = TestBed.createComponent(KonvaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

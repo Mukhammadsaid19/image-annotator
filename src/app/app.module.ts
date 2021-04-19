@@ -9,8 +9,9 @@ import { MaterialModule } from './material.module';
 import { FormsModule } from '@angular/forms';
 import { CanvasComponent } from './annotator/canvas/canvas.component';
 import { LabelClassesComponent } from './annotator/label-classes/label-classes.component';
-import { LabelDetailsComponent } from './annotator/label-details/label-details.component';
 import { LabelListComponent } from './annotator/label-list/label-list.component';
+import { KonvaComponent } from './konva/konva.component';
+import { KonvaModule } from 'ng2-konva';
 
 @NgModule({
   declarations: [
@@ -18,8 +19,8 @@ import { LabelListComponent } from './annotator/label-list/label-list.component'
     AnnotatorComponent,
     CanvasComponent,
     LabelClassesComponent,
-    LabelDetailsComponent,
     LabelListComponent,
+    KonvaComponent,
   ],
   imports: [
     BrowserModule,
@@ -27,6 +28,7 @@ import { LabelListComponent } from './annotator/label-list/label-list.component'
     BrowserAnimationsModule,
     MaterialModule,
     FormsModule,
+    KonvaModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
